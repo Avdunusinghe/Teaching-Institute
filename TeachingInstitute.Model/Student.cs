@@ -14,5 +14,6 @@ namespace TeachingInstitute.Model
         public string BirthDay { get; set; }
         public string MobileNumber { get; set; }
         public string Address { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

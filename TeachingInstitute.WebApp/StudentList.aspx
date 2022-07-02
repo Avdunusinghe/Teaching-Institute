@@ -16,6 +16,7 @@
             <asp:DynamicField DataField ="Address" />
             <asp:DynamicField DataField ="MobileNumber" />
             <asp:DynamicField DataField ="Birthday" />
+            <asp:DynamicField DataField ="CreatedDate" />
         </Columns>
     </asp:GridView>
 </asp:Content>

@@ -40,7 +40,7 @@ namespace TeachingInstitute.WebApp
 
              
 
-                sqlCommand.CommandText = "SELECT id, firstName, lastName, address, mobileNumber, birthday FROM student";
+                sqlCommand.CommandText = "SELECT id, firstName, lastName, address, mobileNumber, birthday, createdDate FROM student ORDER BY createdDate DESC";
                 mySqlDataReader = sqlCommand.ExecuteReader();
 
                 while (mySqlDataReader.Read())
@@ -52,7 +52,9 @@ namespace TeachingInstitute.WebApp
                         LastName = mySqlDataReader["lastName"].ToString(),
                         MobileNumber = mySqlDataReader["mobileNumber"].ToString(),
                         Address = mySqlDataReader["Address"].ToString(),
-                        BirthDay = mySqlDataReader["birthDay"].ToString()
+                        BirthDay = mySqlDataReader["birthDay"].ToString(),
+                        CreatedDate = DateTime.Parse(mySqlDataReader["createdDate"].ToString()),
+                        
                     };
 
                     studentList.Add(studentDetails);
