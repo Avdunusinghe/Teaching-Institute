@@ -14,8 +14,10 @@ namespace TeachingInstitute.WebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var studentList = new List<Student>();
-            studentList = GetStudentDetails();
+            if (!this.IsPostBack)
+            {
+                this.GetStudentDetails();
+            }
         }
 
         // The return type can be changed to IEnumerable, however to support
@@ -24,7 +26,7 @@ namespace TeachingInstitute.WebApp
         //     int startRowIndex
         //     out int totalRowCount
         //     string sortByExpression
-        public List<Student> GetStudentDetails()
+        public void GetStudentDetails()
         {
             var studentList = new List<Student>();
 
@@ -35,6 +37,8 @@ namespace TeachingInstitute.WebApp
                 MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
                 MySqlDataReader mySqlDataReader = null;
                 mySqlConnection.Open();
+
+             
 
                 sqlCommand.CommandText = "SELECT id, firstName, lastName, address, mobileNumber, birthday FROM student";
                 mySqlDataReader = sqlCommand.ExecuteReader();
@@ -54,6 +58,9 @@ namespace TeachingInstitute.WebApp
                     studentList.Add(studentDetails);
                 }
 
+                gridStudentList.DataSource = studentList;
+                gridStudentList.DataBind();
+
                 mySqlDataReader.Close();
                 mySqlConnection.Close();
 
@@ -65,7 +72,13 @@ namespace TeachingInstitute.WebApp
             }
 
 
-            return studentList;
+           
+        }
+
+        protected void GridPageIndexChange(object sender, GridViewPageEventArgs e)
+        {
+            gridStudentList.PageIndex = e.NewPageIndex;
+            this.GetStudentDetails();
         }
     }
 }

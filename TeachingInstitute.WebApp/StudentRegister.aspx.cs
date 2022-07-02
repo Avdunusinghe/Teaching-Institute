@@ -36,13 +36,15 @@ namespace TeachingInstitute.WebApp
                 student.BirthDay = txtBirthDay.Text.Trim();
                 student.Address = txtAddress.Text.Trim();
 
-                sqlCommand.CommandText = "INSERT INTO student (firstName, lastName, address, mobileNumber, birthDay) VALUES (@firstName, @lastName, @address, @mobileNumber, @birthDay)";
+                sqlCommand.CommandText = "INSERT INTO student (firstName, lastName, address, mobileNumber, birthDay, createdDate) VALUES" +
+                    "(@firstName, @lastName, @address, @mobileNumber, @birthDay, @createdDate)";
 
                 sqlCommand.Parameters.AddWithValue("@firstName", student.FirstName);
                 sqlCommand.Parameters.AddWithValue("@lastName", student.LastName);
                 sqlCommand.Parameters.AddWithValue("@address", student.Address);
                 sqlCommand.Parameters.AddWithValue("@mobileNumber", student.MobileNumber);
                 sqlCommand.Parameters.AddWithValue("@birthDay", DateTime.Parse(student.BirthDay));
+                sqlCommand.Parameters.AddWithValue("@createdDate", DateTime.UtcNow);
 
                 sqlCommand.ExecuteScalar();
                 mySqlConnection.Close();
