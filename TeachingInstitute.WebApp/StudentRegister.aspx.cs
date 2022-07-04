@@ -17,10 +17,15 @@ namespace TeachingInstitute.WebApp
         {
             var id = int.Parse(Request.QueryString["id"]);
 
-            if (id > 0)
+            if (!Page.IsPostBack)
             {
-                FillStudentFormData(id);
+                if (id > 0)
+                {
+                    FillStudentFormData(id);
+                }
             }
+
+           
            
         }
 
