@@ -8,8 +8,8 @@
         AllowPaging="true" 
         PageSize="3"
         OnPageIndexChanging="GridPageIndexChange"
-        OnRowEditing="gridStudentList_RowEditing"
-        OnRowDeleting="gridStudentList_RowDeleting"
+        OnRowUpdating="btn_update_Click"
+        OnRowDeleting="btn_delete_Click"
         runat="server">
         <Columns>
             <asp:DynamicField DataField ="Id" />
@@ -19,9 +19,14 @@
             <asp:DynamicField DataField ="MobileNumber" />
             <asp:DynamicField DataField ="Birthday" />
             <asp:DynamicField DataField ="CreatedDate" />
-            <asp:CommandField ShowEditButton ="true" />
-            <asp:CommandField ShowDeleteButton ="true" />
-
+            <asp:TemplateField>  
+                    <ItemTemplate> 
+                      <asp:Button ID="btn_update" runat="server" Text="Update" CommandName="update"  OnClick="btn_update_Click"  CommandArgument='<%# Eval("Id") %>' />  
+                       <asp:Button ID="btn_delete" runat="server" Text="Delete" CommandName="delete" OnClick="btn_delete_Click"  CommandArgument='<%# Eval("Id") %>'/>  
+                    </ItemTemplate>  
+                    
+                </asp:TemplateField>  
+           
         </Columns>
     </asp:GridView>
 </asp:Content>

@@ -83,14 +83,9 @@ namespace TeachingInstitute.WebApp
             this.GetStudentDetails();
         }
 
-        protected void gridStudentList_RowUpdating(object sender, GridViewUpdateEventArgs e)
+
+        protected void btn_delete_Click(object sender, EventArgs e)
         {
-
-        }
-
-        protected void gridStudentList_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        {
-
             try
             {
                 var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
@@ -98,11 +93,11 @@ namespace TeachingInstitute.WebApp
                 MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
                 mySqlConnection.Open();
 
-                var studentId = gridStudentList.DataKeys[e.RowIndex].Value.ToString();
+                var studentId = int.Parse((sender as Button).CommandArgument);
 
                 sqlCommand.CommandText = "DELETE from student WHERE id = @studentId";
 
-                sqlCommand.Parameters.AddWithValue("@studentId", int.Parse(studentId));
+                sqlCommand.Parameters.AddWithValue("@studentId", studentId);
 
                 sqlCommand.ExecuteScalar();
                 mySqlConnection.Close();
@@ -110,20 +105,19 @@ namespace TeachingInstitute.WebApp
 
                 this.GetStudentDetails();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
-           
-
-           
-
-
 
         }
 
-        protected void gridStudentList_RowEditing(object sender, GridViewEditEventArgs e)
+        protected void btn_update_Click(object sender, EventArgs e)
         {
+            var id = int.Parse((sender as Button).CommandArgument);
+
+            Response.Redirect("StudentRegister.aspx?id=" + id);
+
 
         }
     }

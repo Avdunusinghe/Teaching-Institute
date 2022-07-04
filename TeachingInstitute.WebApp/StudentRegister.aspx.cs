@@ -15,7 +15,45 @@ namespace TeachingInstitute.WebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            var id = int.Parse(Request.QueryString["id"]);
 
+            if (id > 0)
+            {
+                FillStudentFormData(id);
+            }
+           
+        }
+
+        protected void FillStudentFormData(int id)
+        {
+            try
+            {
+                var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
+                var mySqlConnection = new MySqlConnection(connectionString);
+                MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
+                MySqlDataReader mySqlDataReader = null;
+                mySqlConnection.Open();
+
+                sqlCommand.CommandText = "SELECT id, firstName, lastName, address, mobileNumber, birthday, createdDate FROM student WHERE id = @id";
+                sqlCommand.Parameters.AddWithValue("@id", id);
+
+                mySqlDataReader = sqlCommand.ExecuteReader();
+
+                while (mySqlDataReader.Read())
+                {
+                    txtFirstName.Text = mySqlDataReader["firstName"].ToString();
+                    txtLastName.Text = mySqlDataReader["lastName"].ToString();
+                    txtMobileNumber.Text = mySqlDataReader["mobileNumber"].ToString();
+                    txtAddress.Text = mySqlDataReader["Address"].ToString();
+                    txtBirthDay.Text = mySqlDataReader["birthDay"].ToString();
+
+                }
+
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         protected void SaveStudent(object sender, EventArgs e)
@@ -61,5 +99,7 @@ namespace TeachingInstitute.WebApp
 
             
         }
+
+
     }
 }

@@ -6,13 +6,13 @@
     <formview>
         <div class="form-group">
             <asp:Label ID="lblFirstName" runat="server" Text="First Name"></asp:Label>
-            <asp:TextBox ID="txtFirstName" class="form-control"  runat="server"></asp:TextBox>
+            <asp:TextBox ID="txtFirstName" class="form-control"  runat="server" OnTextChanged="txtFirstName_TextChanged"></asp:TextBox>
 
              <asp:Label ID="lblLastName" runat="server" Text="Last Name"></asp:Label>
             <asp:TextBox ID="txtLastName" class="form-control"  runat="server"></asp:TextBox>
 
              <asp:Label ID="lblAddress" runat="server" Text="Address"></asp:Label>
-            <asp:TextBox ID="txtAddress" class="form-control"  runat="server"></asp:TextBox>
+            <asp:TextBox ID="txtAddress" class="form-control" runat="server"></asp:TextBox>
 
              <asp:Label ID="lblMobileNumber" runat="server" Text="MobileNUmber"></asp:Label>
             <asp:TextBox ID="txtMobileNumber" class="form-control"  runat="server"></asp:TextBox>
