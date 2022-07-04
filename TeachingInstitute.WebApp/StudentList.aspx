@@ -8,6 +8,8 @@
         AllowPaging="true" 
         PageSize="3"
         OnPageIndexChanging="GridPageIndexChange"
+        OnRowEditing="gridStudentList_RowEditing"
+        OnRowDeleting="gridStudentList_RowDeleting"
         runat="server">
         <Columns>
             <asp:DynamicField DataField ="Id" />
@@ -17,6 +19,9 @@
             <asp:DynamicField DataField ="MobileNumber" />
             <asp:DynamicField DataField ="Birthday" />
             <asp:DynamicField DataField ="CreatedDate" />
+            <asp:CommandField ShowEditButton ="true" />
+            <asp:CommandField ShowDeleteButton ="true" />
+
         </Columns>
     </asp:GridView>
 </asp:Content>

@@ -48,7 +48,9 @@ namespace TeachingInstitute.WebApp
 
                 sqlCommand.ExecuteScalar();
                 mySqlConnection.Close();
-                
+
+              
+                Response.Redirect("StudentList.aspx");
 
             }
             catch(Exception ex)

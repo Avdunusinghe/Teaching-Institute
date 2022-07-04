@@ -82,5 +82,49 @@ namespace TeachingInstitute.WebApp
             gridStudentList.PageIndex = e.NewPageIndex;
             this.GetStudentDetails();
         }
+
+        protected void gridStudentList_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+
+        }
+
+        protected void gridStudentList_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+
+            try
+            {
+                var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
+                var mySqlConnection = new MySqlConnection(connectionString);
+                MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
+                mySqlConnection.Open();
+
+                var studentId = gridStudentList.DataKeys[e.RowIndex].Value.ToString();
+
+                sqlCommand.CommandText = "DELETE from student WHERE id = @studentId";
+
+                sqlCommand.Parameters.AddWithValue("@studentId", int.Parse(studentId));
+
+                sqlCommand.ExecuteScalar();
+                mySqlConnection.Close();
+
+
+                this.GetStudentDetails();
+            }
+            catch(Exception ex)
+            {
+
+            }
+           
+
+           
+
+
+
+        }
+
+        protected void gridStudentList_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+
+        }
     }
 }

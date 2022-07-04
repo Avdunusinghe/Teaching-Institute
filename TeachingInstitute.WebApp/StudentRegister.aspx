@@ -1,5 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="StudentRegister.aspx.cs" Inherits="TeachingInstitute.WebApp.StudentRegister" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+     <script type="text/javascript" src="Scripts/toastr.js"></script>
+     <link href="Content/toastr.css" rel="stylesheet"
+        type="text/css" media="screen" />
     <formview>
         <div class="form-group">
             <asp:Label ID="lblFirstName" runat="server" Text="First Name"></asp:Label>
