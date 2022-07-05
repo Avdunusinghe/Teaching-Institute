@@ -31,14 +31,14 @@ namespace TeachingInstitute.WebApp
 
         protected void FillStudentFormData(int id)
         {
+            var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
+            var mySqlConnection = new MySqlConnection(connectionString);
+            MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
+            MySqlDataReader mySqlDataReader = null;
+            mySqlConnection.Open();
             try
             {
-                var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
-                var mySqlConnection = new MySqlConnection(connectionString);
-                MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
-                MySqlDataReader mySqlDataReader = null;
-                mySqlConnection.Open();
-
+                
                 sqlCommand.CommandText = "SELECT id, firstName, lastName, address, mobileNumber, birthday, createdDate FROM student WHERE id = @id";
                 sqlCommand.Parameters.AddWithValue("@id", id);
 
@@ -59,17 +59,22 @@ namespace TeachingInstitute.WebApp
             {
 
             }
+            finally
+            {
+                mySqlDataReader.Close();
+                mySqlConnection.Close();
+                sqlCommand.Dispose();
+            }
         }
 
         protected void SaveStudent(object sender, EventArgs e)
         {
+            var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
+            var mySqlConnection = new MySqlConnection(connectionString);
+            MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
             try
             {
                 var student = new Student();
-
-                var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
-                var mySqlConnection = new MySqlConnection(connectionString);
-                MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
                 mySqlConnection.Open();
 
 
@@ -90,7 +95,7 @@ namespace TeachingInstitute.WebApp
                 sqlCommand.Parameters.AddWithValue("@createdDate", DateTime.UtcNow);
 
                 sqlCommand.ExecuteScalar();
-                mySqlConnection.Close();
+              
 
               
                 Response.Redirect("StudentList.aspx");
@@ -99,6 +104,11 @@ namespace TeachingInstitute.WebApp
             catch(Exception ex)
             {
 
+            }
+            finally
+            {
+                mySqlConnection.Close();
+                sqlCommand.Dispose();
             }
           
 

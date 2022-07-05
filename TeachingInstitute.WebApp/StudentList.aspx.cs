@@ -20,26 +20,18 @@ namespace TeachingInstitute.WebApp
             }
         }
 
-        // The return type can be changed to IEnumerable, however to support
-        // paging and sorting, the following parameters must be added:
-        //     int maximumRows
-        //     int startRowIndex
-        //     out int totalRowCount
-        //     string sortByExpression
         public void GetStudentDetails()
         {
             var studentList = new List<Student>();
+            var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
+            var mySqlConnection = new MySqlConnection(connectionString);
+            MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
+            MySqlDataReader mySqlDataReader = null;
+            mySqlConnection.Open();
 
             try
             {
-                var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
-                var mySqlConnection = new MySqlConnection(connectionString);
-                MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
-                MySqlDataReader mySqlDataReader = null;
-                mySqlConnection.Open();
-
-             
-
+                
                 sqlCommand.CommandText = "SELECT id, firstName, lastName, address, mobileNumber, birthday, createdDate FROM student ORDER BY createdDate DESC";
                 mySqlDataReader = sqlCommand.ExecuteReader();
 
@@ -63,14 +55,19 @@ namespace TeachingInstitute.WebApp
                 gridStudentList.DataSource = studentList;
                 gridStudentList.DataBind();
 
-                mySqlDataReader.Close();
-                mySqlConnection.Close();
+              
 
 
             }
             catch (Exception ex)
             {
 
+            }
+            finally
+            {
+                mySqlDataReader.Close();
+                mySqlConnection.Close();
+                
             }
 
 
