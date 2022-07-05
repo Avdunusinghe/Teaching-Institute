@@ -119,7 +119,7 @@ namespace TeachingInstitute.WebApp
                         script = "window.onload = function(){ alert('";
                         script += message;
                         script += "');";
-                        script += "window.location = '";
+                        
                         script += "'; }";
                         ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
                     }

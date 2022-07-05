@@ -287,6 +287,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TeachingInstitute.Business\TeachingInstitute.Business.csproj">
+      <Project>{F9C92E07-8E02-4E11-BF29-B52F05318769}</Project>
+      <Name>TeachingInstitute.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeachingInstitute.Model\TeachingInstitute.Model.csproj">
       <Project>{7f2cab5b-d4ad-42ae-b590-8438e93630eb}</Project>
       <Name>TeachingInstitute.Model</Name>

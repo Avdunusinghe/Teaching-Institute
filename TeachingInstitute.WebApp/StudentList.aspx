@@ -9,7 +9,7 @@
         DataKeyNames="Id" 
         AutoGenerateColumns="false"
         AllowPaging="true" 
-        PageSize="3"
+        PageSize="20"
         OnPageIndexChanging="GridPageIndexChange"
         OnRowUpdating="btn_update_Click"
         OnRowDeleting="btn_delete_Click"
