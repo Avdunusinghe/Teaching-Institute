@@ -55,8 +55,6 @@ namespace TeachingInstitute.WebApp
                 gridStudentList.DataSource = studentList;
                 gridStudentList.DataBind();
 
-              
-
 
             }
             catch (Exception ex)
