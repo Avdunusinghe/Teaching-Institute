@@ -26,54 +26,13 @@ namespace TeachingInstitute.WebApp
 
         public void GetStudentDetails()
         {
-            var studentList = new List<Student>();
-            var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
-            var mySqlConnection = new MySqlConnection(connectionString);
-            MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
-            MySqlDataReader mySqlDataReader = null;
-            mySqlConnection.Open();
 
-            try
-            {
-                
-                sqlCommand.CommandText = "SELECT id, firstName, lastName, address, mobileNumber, birthday, createdDate FROM student ORDER BY createdDate DESC";
-                mySqlDataReader = sqlCommand.ExecuteReader();
-
-                while (mySqlDataReader.Read())
-                {
-                    var studentDetails = new Student
-                    {
-                        Id = int.Parse(mySqlDataReader["id"].ToString()),
-                        FirstName = mySqlDataReader["firstName"].ToString(),
-                        LastName = mySqlDataReader["lastName"].ToString(),
-                        MobileNumber = mySqlDataReader["mobileNumber"].ToString(),
-                        Address = mySqlDataReader["Address"].ToString(),
-                        BirthDay = mySqlDataReader["birthDay"].ToString(),
-                        CreatedDate = DateTime.Parse(mySqlDataReader["createdDate"].ToString()),
-                        
-                    };
-
-                    studentList.Add(studentDetails);
-                }
-
-                gridStudentList.DataSource = studentList;
-                gridStudentList.DataBind();
+            IStudentService _studentService = new StudentService();
+            var students = _studentService.GetStudents();
 
 
-            }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                mySqlDataReader.Close();
-                mySqlConnection.Close();
-                
-            }
-
-
-           
+            gridStudentList.DataSource = students;
+            gridStudentList.DataBind();
         }
 
         protected void GridPageIndexChange(object sender, GridViewPageEventArgs e)

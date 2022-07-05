@@ -7,7 +7,10 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using TeachingInstitute.Business;
+using TeachingInstitute.Business.Interfaces;
 using TeachingInstitute.Model;
+using static TeachingInstitute.Business.StudentService;
 
 namespace TeachingInstitute.WebApp
 {
@@ -30,144 +33,58 @@ namespace TeachingInstitute.WebApp
 
         protected void FillStudentFormData(int id)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
-            var mySqlConnection = new MySqlConnection(connectionString);
-            MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
-            MySqlDataReader mySqlDataReader = null;
-            mySqlConnection.Open();
-            try
-            {
-                
-                sqlCommand.CommandText = "SELECT id, firstName, lastName, address, mobileNumber, birthday, createdDate FROM student WHERE id = @id";
-                sqlCommand.Parameters.AddWithValue("@id", id);
+            IStudentService _studentService = new StudentService();
+            var student = _studentService.FillStudentForm(id);
 
-                mySqlDataReader = sqlCommand.ExecuteReader();
+            txtFirstName.Text = student.FirstName;
+            txtLastName.Text = student.LastName;
+            txtMobileNumber.Text = student.MobileNumber;
+            txtAddress.Text = student.Address;
+            txtBirthDay.Text = student.BirthDay;
 
-                while (mySqlDataReader.Read())
-                {
-                    txtFirstName.Text = mySqlDataReader["firstName"].ToString();
-                    txtLastName.Text = mySqlDataReader["lastName"].ToString();
-                    txtMobileNumber.Text = mySqlDataReader["mobileNumber"].ToString();
-                    txtAddress.Text = mySqlDataReader["Address"].ToString();
-                    txtBirthDay.Text = mySqlDataReader["birthDay"].ToString();
-
-                }
-
-            }
-            catch(Exception ex)
-            {
-
-            }
-            finally
-            {
-                mySqlDataReader.Close();
-                mySqlConnection.Close();
-                sqlCommand.Dispose();
-            }
         }
 
         protected void SaveStudent(object sender, EventArgs e)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
-            var mySqlConnection = new MySqlConnection(connectionString);
-            MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
-            MySqlDataReader mySqlDataReader = null;
             string validMobileNumber = string.Empty;
             string message = string.Empty;
             string script = string.Empty;
             string url = string.Empty;
-            try
+          
+            var student = new Student();
+               
+            student.Id = Request.QueryString["id"] == null ? 0 : int.Parse(Request.QueryString["id"]);
+            student.FirstName = txtFirstName.Text.Trim();
+            student.LastName = txtLastName.Text.Trim();
+            student.MobileNumber = txtMobileNumber.Text.Trim();
+            student.BirthDay = txtBirthDay.Text.Trim();
+            student.Address = txtAddress.Text.Trim();
+
+            IStudentService _studentService = new StudentService();
+            var response = _studentService.SaveStudent(student);
+
+            if (!response.IsValidMobileNumber)
             {
-                var student = new Student();
-                mySqlConnection.Open();
-
-                student.Id = Request.QueryString["id"] == null ? 0 : int.Parse(Request.QueryString["id"]);
-                student.FirstName = txtFirstName.Text.Trim();
-                student.LastName = txtLastName.Text.Trim();
-                student.MobileNumber = txtMobileNumber.Text.Trim();
-                student.BirthDay = txtBirthDay.Text.Trim();
-                student.Address = txtAddress.Text.Trim();
-
-                if(student.Id > 0)
-                {
-                    sqlCommand.CommandText = "UPDATE student SET firstName = @firstName, lastName = @lastName, address = @address, " +
-                                              "mobileNumber = @mobileNumber, birthDay= @birthDay WHERE id = @id";
-
-                    sqlCommand.Parameters.AddWithValue("@id", student.Id);
-                    sqlCommand.Parameters.AddWithValue("@firstName", student.FirstName);
-                    sqlCommand.Parameters.AddWithValue("@lastName", student.LastName);
-                    sqlCommand.Parameters.AddWithValue("@address", student.Address);
-                    sqlCommand.Parameters.AddWithValue("@mobileNumber", student.MobileNumber);
-                    sqlCommand.Parameters.AddWithValue("@birthDay", DateTime.Parse(student.BirthDay));
-                   
-                }
-                else
-                {
-                    sqlCommand.CommandText = "SELECT  mobileNumber From student WHERE mobileNumber = @mobileNumber";
-                    sqlCommand.Parameters.AddWithValue("@mobileNumber", student.MobileNumber);
-
-                    mySqlDataReader = sqlCommand.ExecuteReader();
-
-                    while (mySqlDataReader.Read())
-                    {
-                        validMobileNumber = mySqlDataReader["mobileNumber"].ToString();
-                    }
-
-                    if(validMobileNumber == student.MobileNumber)
-                    {
-                        message = "Mobile Number All Ready Exsist,Please Enter Your Mobile Number";
-                        script = "window.onload = function(){ alert('";
-                        script += message;
-                        script += "');";
-                        
-                        script += "'; }";
-                        ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
-                    }
-
-                    mySqlDataReader.Close();
-                    sqlCommand.Parameters.Clear();
-
-                    sqlCommand.CommandText = "INSERT INTO student (firstName, lastName, address, mobileNumber, birthDay, createdDate) VALUES" +
-                                            "(@firstName, @lastName, @address, @mobileNumber, @birthDay, @createdDate)";
-
-                    sqlCommand.Parameters.AddWithValue("@firstName", student.FirstName);
-                    sqlCommand.Parameters.AddWithValue("@lastName", student.LastName);
-                    sqlCommand.Parameters.AddWithValue("@address", student.Address);
-                    sqlCommand.Parameters.AddWithValue("@mobileNumber", student.MobileNumber);
-                    sqlCommand.Parameters.AddWithValue("@birthDay", DateTime.Parse(student.BirthDay));
-                    sqlCommand.Parameters.AddWithValue("@createdDate", DateTime.UtcNow);
-
-                }
-
-
-                sqlCommand.ExecuteScalar();
-
-                message = student.Id == 0 ? "Student Save Successsfull..." : "Student Update Successfull...";
-                url = "StudentList.aspx";
+                message = "Mobile Number All Ready Exsist,Please Enter Your Mobile Number";
                 script = "window.onload = function(){ alert('";
                 script += message;
                 script += "');";
-                script += "window.location = '";
-                script += url;
                 script += "'; }";
                 ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
-           
-
             }
-            catch(Exception ex)
+
+            if (response.IsSuceess)
             {
-
+               message = student.Id == 0 ? "Student Save Successsfull..." : "Student Update Successfull...";
+               url = "StudentList.aspx";
+               script = "window.onload = function(){ alert('";
+               script += message;
+               script += "');";
+               script += "window.location = '";
+               script += url;
+               script += "'; }";
+               ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
             }
-            finally
-            {
-                mySqlConnection.Close();
-                sqlCommand.Dispose();
-            }
-          
-
-            
         }
-
-
     }
 }

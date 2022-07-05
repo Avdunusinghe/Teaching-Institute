@@ -9,7 +9,9 @@ namespace TeachingInstitute.Business.Interfaces
 {
     public interface IStudentService
     {
-        //List<Student> GetStudents();
+        List<Student> GetStudents();
         bool DeleteStudent(int id);
+        StudentSaveResponse SaveStudent(Student student);
+        Student FillStudentForm(int id);
     }
 }
