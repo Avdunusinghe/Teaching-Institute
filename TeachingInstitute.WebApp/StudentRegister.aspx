@@ -19,7 +19,7 @@
             <asp:TextBox ID="txtAddress" class="form-control" runat="server"></asp:TextBox>
         </div>
          <div class="form-group">
-             <asp:Label ID="lblMobileNumber" runat="server" Text="MobileNUmber"></asp:Label>
+             <asp:Label ID="lblMobileNumber" runat="server" Text="MobileNumber"></asp:Label>
             <asp:TextBox ID="txtMobileNumber" class="form-control"  runat="server"></asp:TextBox>
         </div>
          <div class="form-group">

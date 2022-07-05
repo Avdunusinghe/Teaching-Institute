@@ -26,8 +26,6 @@ namespace TeachingInstitute.WebApp
                 }
             }
 
-           
-           
         }
 
         protected void FillStudentFormData(int id)
@@ -73,6 +71,11 @@ namespace TeachingInstitute.WebApp
             var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
             var mySqlConnection = new MySqlConnection(connectionString);
             MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
+            MySqlDataReader mySqlDataReader = null;
+            string validMobileNumber = string.Empty;
+            string message = string.Empty;
+            string script = string.Empty;
+            string url = string.Empty;
             try
             {
                 var student = new Student();
@@ -87,7 +90,8 @@ namespace TeachingInstitute.WebApp
 
                 if(student.Id > 0)
                 {
-                    sqlCommand.CommandText = "UPDATE student SET firstName = @firstName, lastName = @lastName, address = @address, mobileNumber = @mobileNumber, birthDay= @birthDay WHERE id = @id";
+                    sqlCommand.CommandText = "UPDATE student SET firstName = @firstName, lastName = @lastName, address = @address, " +
+                                              "mobileNumber = @mobileNumber, birthDay= @birthDay WHERE id = @id";
 
                     sqlCommand.Parameters.AddWithValue("@id", student.Id);
                     sqlCommand.Parameters.AddWithValue("@firstName", student.FirstName);
@@ -99,6 +103,27 @@ namespace TeachingInstitute.WebApp
                 }
                 else
                 {
+                    sqlCommand.CommandText = "SELECT  mobileNumber From student WHERE mobileNumber = @mobileNumber";
+                    sqlCommand.Parameters.AddWithValue("@mobileNumber", student.MobileNumber);
+
+                    mySqlDataReader = sqlCommand.ExecuteReader();
+
+                    while (mySqlDataReader.Read())
+                    {
+                        validMobileNumber = mySqlDataReader["mobileNumber"].ToString();
+                    }
+
+                    if(validMobileNumber == student.MobileNumber)
+                    {
+                        message = "Mobile Number All Ready Exsist,Please Enter Your Mobile Number";
+                        script = "window.onload = function(){ alert('";
+                        script += message;
+                        script += "');";
+                        script += "window.location = '";
+                        script += "'; }";
+                        ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
+                    }
+
                     sqlCommand.CommandText = "INSERT INTO student (firstName, lastName, address, mobileNumber, birthDay, createdDate) VALUES" +
                                             "(@firstName, @lastName, @address, @mobileNumber, @birthDay, @createdDate)";
 
@@ -114,9 +139,9 @@ namespace TeachingInstitute.WebApp
 
                 sqlCommand.ExecuteScalar();
 
-                string message = student.Id == 0 ? "Student Save Successsfull..." : "Student Update Successfull...";
-                string url = "StudentList.aspx";
-                string script = "window.onload = function(){ alert('";
+                message = student.Id == 0 ? "Student Save Successsfull..." : "Student Update Successfull...";
+                url = "StudentList.aspx";
+                script = "window.onload = function(){ alert('";
                 script += message;
                 script += "');";
                 script += "window.location = '";

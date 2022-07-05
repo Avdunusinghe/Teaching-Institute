@@ -1,5 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="StudentList.aspx.cs" Inherits="TeachingInstitute.WebApp.StudentList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+
+    <h2>Student List</h2>
+    <hr />
     <asp:GridView 
         ID="gridStudentList" 
         ItemType="TeachingInstitute.Model.Student"
@@ -22,8 +25,23 @@
             <asp:DynamicField DataField ="CreatedDate" />
             <asp:TemplateField>  
                     <ItemTemplate> 
-                      <asp:Button ID="btn_update" runat="server" Text="Update"  class="btn btn-success" CommandName="update"  OnClick="btn_update_Click"  CommandArgument='<%# Eval("Id") %>' />  
-                       <asp:Button ID="btn_delete" runat="server" Text="Delete"  class="btn btn-danger" CommandName="delete" OnClick="btn_delete_Click"  CommandArgument='<%# Eval("Id") %>'/>  
+                      <asp:Button 
+                          ID="btn_update" 
+                          runat="server" 
+                          Text="Update"  
+                          class="btn btn-success" 
+                          CommandName="update"  
+                          OnClick="btn_update_Click" 
+                          CommandArgument='<%# Eval("Id") %>' />  
+
+                       <asp:Button 
+                           ID="btn_delete" 
+                           runat="server" 
+                           Text="Delete"  
+                           class="btn btn-danger"
+                           CommandName="delete"
+                           OnClick="btn_delete_Click" 
+                           CommandArgument='<%# Eval("Id") %>'/>  
                     </ItemTemplate>  
                 </asp:TemplateField>  
            

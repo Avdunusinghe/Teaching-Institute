@@ -81,13 +81,14 @@ namespace TeachingInstitute.WebApp
 
         protected void btn_delete_Click(object sender, EventArgs e)
         {
+            var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
+            var mySqlConnection = new MySqlConnection(connectionString);
+            MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
+            mySqlConnection.Open();
+
             try
             {
-                var connectionString = ConfigurationManager.ConnectionStrings["TIConnection"].ToString();
-                var mySqlConnection = new MySqlConnection(connectionString);
-                MySqlCommand sqlCommand = new MySqlCommand("", mySqlConnection);
-                mySqlConnection.Open();
-
+              
                 var studentId = int.Parse((sender as Button).CommandArgument);
 
                 sqlCommand.CommandText = "DELETE from student WHERE id = @studentId";
@@ -95,13 +96,26 @@ namespace TeachingInstitute.WebApp
                 sqlCommand.Parameters.AddWithValue("@studentId", studentId);
 
                 sqlCommand.ExecuteScalar();
-                mySqlConnection.Close();
+
+                string message = "Student Delete Successfull...";
+                string script = "window.onload = function(){ alert('";
+                script += message;
+                script += "');";
+                script += "window.location = '";
+                script += "'; }";
+                ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
 
 
                 this.GetStudentDetails();
             }
             catch (Exception ex)
             {
+
+            }
+            finally
+            {
+             
+                mySqlConnection.Close();
 
             }
 
