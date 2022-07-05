@@ -10,7 +10,8 @@
         OnPageIndexChanging="GridPageIndexChange"
         OnRowUpdating="btn_update_Click"
         OnRowDeleting="btn_delete_Click"
-        runat="server">
+        runat="server"
+        class="table table-striped">
         <Columns>
             <asp:DynamicField DataField ="Id" />
             <asp:DynamicField DataField ="FirstName" />
@@ -21,10 +22,9 @@
             <asp:DynamicField DataField ="CreatedDate" />
             <asp:TemplateField>  
                     <ItemTemplate> 
-                      <asp:Button ID="btn_update" runat="server" Text="Update" CommandName="update"  OnClick="btn_update_Click"  CommandArgument='<%# Eval("Id") %>' />  
-                       <asp:Button ID="btn_delete" runat="server" Text="Delete" CommandName="delete" OnClick="btn_delete_Click"  CommandArgument='<%# Eval("Id") %>'/>  
+                      <asp:Button ID="btn_update" runat="server" Text="Update"  class="btn btn-success" CommandName="update"  OnClick="btn_update_Click"  CommandArgument='<%# Eval("Id") %>' />  
+                       <asp:Button ID="btn_delete" runat="server" Text="Delete"  class="btn btn-danger" CommandName="delete" OnClick="btn_delete_Click"  CommandArgument='<%# Eval("Id") %>'/>  
                     </ItemTemplate>  
-                    
                 </asp:TemplateField>  
            
         </Columns>

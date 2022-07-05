@@ -113,10 +113,17 @@ namespace TeachingInstitute.WebApp
 
 
                 sqlCommand.ExecuteScalar();
-              
 
-              
-                Response.Redirect("StudentList.aspx");
+                string message = student.Id == 0 ? "Student Save Successsfull..." : "Student Update Successfull...";
+                string url = "StudentList.aspx";
+                string script = "window.onload = function(){ alert('";
+                script += message;
+                script += "');";
+                script += "window.location = '";
+                script += url;
+                script += "'; }";
+                ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
+           
 
             }
             catch(Exception ex)
