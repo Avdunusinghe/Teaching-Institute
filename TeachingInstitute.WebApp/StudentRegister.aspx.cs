@@ -124,6 +124,9 @@ namespace TeachingInstitute.WebApp
                         ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
                     }
 
+                    mySqlDataReader.Close();
+                    sqlCommand.Parameters.Clear();
+
                     sqlCommand.CommandText = "INSERT INTO student (firstName, lastName, address, mobileNumber, birthDay, createdDate) VALUES" +
                                             "(@firstName, @lastName, @address, @mobileNumber, @birthDay, @createdDate)";
 
